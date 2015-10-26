@@ -148,10 +148,10 @@ public class Administration {
 		
 		txtTest = new Text(shell, SWT.BORDER);
 		txtTest.setText("");
-		txtTest.setBounds(463, 768, 306, 21);
+		txtTest.setBounds(465, 768, 306, 29);
 
 		textNbOfHashes = new Text(shell, SWT.BORDER);
-		textNbOfHashes.setBounds(884, 768, 331, 21);
+		textNbOfHashes.setBounds(910, 768, 331, 29);
 
 		//Menu Creator==================================
 		
@@ -229,7 +229,7 @@ public class Administration {
 		btnNewButton_6.setEnabled(false);
 		
 		Button btnGetArraySize = new Button(shell, SWT.NONE);
-		btnGetArraySize.setBounds(785, 768, 93, 21);
+		btnGetArraySize.setBounds(785, 768, 119, 29);
 		btnGetArraySize.setText("Get Array Size");
 		
 		//Disables all buttons (TODO : Optimize this - Other class/method) ============================

@@ -5,7 +5,7 @@ You can flag them as unsafe (NSFW), which will keep them from being accessible t
 feature and will not allow ads to be displayed on the same page. The safe option (SFW) will do the opposite. 
 You can also ban pictures you find inappropriate, and those will be unavailable from your server. 
 
-![Screenshot](http://ipfs.pics/ipfs/QmNoeC3JvzdoASgu6fc6SCDbQcijdJgP4jSmoDDipCP69o "Screenshot")
+![Screenshot](http://ipfs.pics/ipfs/QmVQ1cR8VFFjbgK3ZcwstqpKU4662o86gYEm15ktuh52MQ "Screenshot")
 
 # Licence
 
