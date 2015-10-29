@@ -28,6 +28,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
+import java.awt.Desktop;
+import java.net.URI;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -42,7 +44,7 @@ import org.eclipse.swt.widgets.ToolItem;
 
 public class Administration {
 
-	protected Shell shell;
+	protected Shell shlIpfspicsAdministrationTool;
 
 	/**
 	 * Launch the application.
@@ -63,16 +65,14 @@ public class Administration {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
+		shlIpfspicsAdministrationTool.open();
+		shlIpfspicsAdministrationTool.layout();
+		while (!shlIpfspicsAdministrationTool.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
 		}
 	}
-
-	
 	
 	//SQL Connection (TODO : Change this to another class) ===============================
 	
@@ -142,21 +142,21 @@ public class Administration {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shell = new Shell();
-		shell.setSize(1400, 875);
-		shell.setText("SWT Application");
+		shlIpfspicsAdministrationTool = new Shell();
+		shlIpfspicsAdministrationTool.setSize(1400, 875);
+		shlIpfspicsAdministrationTool.setText("ipfs.pics Administration Tool");
 		
-		txtTest = new Text(shell, SWT.BORDER);
+		txtTest = new Text(shlIpfspicsAdministrationTool, SWT.BORDER);
 		txtTest.setText("");
 		txtTest.setBounds(465, 768, 306, 29);
 
-		textNbOfHashes = new Text(shell, SWT.BORDER);
+		textNbOfHashes = new Text(shlIpfspicsAdministrationTool, SWT.BORDER);
 		textNbOfHashes.setBounds(910, 768, 331, 29);
 
 		//Menu Creator==================================
 		
-		Menu menu = new Menu(shell, SWT.BAR);
-		shell.setMenuBar(menu);
+		Menu menu = new Menu(shlIpfspicsAdministrationTool, SWT.BAR);
+		shlIpfspicsAdministrationTool.setMenuBar(menu);
 		
 		MenuItem mntmQuery = new MenuItem(menu, SWT.CASCADE);
 		mntmQuery.setText("Query");
@@ -172,65 +172,69 @@ public class Administration {
 		
 		//Browser Creator==================================
 		
-		Browser browser = new Browser(shell, SWT.NONE);
+		Browser browser = new Browser(shlIpfspicsAdministrationTool, SWT.NONE);
 		browser.setUrl(hashURL);
 		browser.setBounds(10, 10, 1364, 706);
 		
 		//CheckButton Creator==================================
 		
-		Button btnCheckButton = new Button(shell, SWT.CHECK);
+		Button btnCheckButton = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
 		btnCheckButton.setBounds(119, 757, 160, 22);
 		btnCheckButton.setText("Not Administrated");
 		
-		Button btnCheckButton_1 = new Button(shell, SWT.CHECK);
+		Button btnCheckButton_1 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
 		btnCheckButton_1.setBounds(119, 790, 160, 22);
 		btnCheckButton_1.setText("All The Hashes");
 		
-		Button btnCheckButton_2 = new Button(shell, SWT.CHECK);
+		Button btnCheckButton_2 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
 		btnCheckButton_2.setBounds(285, 757, 150, 22);
 		btnCheckButton_2.setText("Only Banned Ones");
 		
-		Button btnCheckButton_3 = new Button(shell, SWT.CHECK);
+		Button btnCheckButton_3 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
 		btnCheckButton_3.setBounds(285, 790, 150, 22);
 		btnCheckButton_3.setText("Only NSFW Ones");
 		
 		//Button Creator==================================
 		
-		Button btnNewButton = new Button(shell, SWT.NONE);
+		Button btnNewButton = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButton.setBounds(10, 722, 93, 29);
 		btnNewButton.setText("Previous");
 		//TODO : Fix this button
 		btnNewButton.setEnabled(false);
 		
-		Button btnNewButton_1 = new Button(shell, SWT.NONE);
+		Button btnNewButton_1 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButton_1.setBounds(1281, 722, 93, 29);
 		btnNewButton_1.setText("Next");
 		
-		Button btnNewButton_2 = new Button(shell, SWT.NONE);
-		btnNewButton_2.setBounds(600, 722, 93, 29);
+		Button btnNewButton_2 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButton_2.setBounds(570, 722, 155, 29);
 		btnNewButton_2.setText("SFW");
 		
-		Button btnNewButton_3 = new Button(shell, SWT.NONE);
-		btnNewButton_3.setBounds(501, 722, 93, 29);
+		Button btnNewButton_3 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButton_3.setBounds(404, 722, 160, 29);
 		btnNewButton_3.setText("NSFW");
 		
-		Button btnNewButton_4 = new Button(shell, SWT.NONE);
-		btnNewButton_4.setBounds(699, 722, 93, 29);
+		Button btnNewButton_4 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButton_4.setBounds(731, 722, 61, 29);
 		btnNewButton_4.setText("Ban");
 		
-		Button btnNewButton_5 = new Button(shell, SWT.NONE);
+		Button btnNewButton_5 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButton_5.setBounds(798, 722, 477, 29);
 		btnNewButton_5.setText("Copy To Clipboard");
 		
-		Button btnNewButton_6 = new Button(shell, SWT.NONE);
-		btnNewButton_6.setBounds(109, 722, 386, 29);
+		Button btnNewButton_6 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButton_6.setBounds(109, 722, 74, 29);
 		btnNewButton_6.setText("Forget");
 		//TODO : Fix this button
 		btnNewButton_6.setEnabled(false);
 		
-		Button btnGetArraySize = new Button(shell, SWT.NONE);
+		Button btnGetArraySize = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnGetArraySize.setBounds(785, 768, 119, 29);
 		btnGetArraySize.setText("Get Array Size");
+		
+		Button btnGoogleImage = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnGoogleImage.setBounds(189, 722, 209, 29);
+		btnGoogleImage.setText("Google Image");
 		
 		//Disables all buttons (TODO : Optimize this - Other class/method) ============================
 		btnNewButton.setEnabled(false);
@@ -346,6 +350,36 @@ public class Administration {
 			}
 		});
 		
+		btnGoogleImage.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (!java.awt.Desktop.isDesktopSupported()) {
+					System.out.println("No. >:(");
+					System.exit(1);
+				}
+				
+				java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+				
+
+				if( !desktop.isSupported( java.awt.Desktop.Action.BROWSE ) ) {
+
+		            System.err.println( "Desktop doesn't support the browse action (fatal)");
+		            System.exit( 1 );
+		        }
+				
+				try {
+
+	                java.net.URI uri = new java.net.URI("https://images.google.com/searchbyimage?image_url=http://ipfs.pics/ipfs/" + hashArray.get(arrayIndex));
+	                desktop.browse( uri );
+	            }
+	            catch (Exception e1) {
+
+	                System.err.println( e1.getMessage() );
+	            }
+				
+			}
+		});
+		
 		//Menu bar Action Listener==================================
 
 		mntmRequestHashes.addSelectionListener(new SelectionAdapter() {
@@ -356,14 +390,15 @@ public class Administration {
 					txtTest.setText("Not Administrated Selected");
 					
 					//TODO : Optimize other class/method (line 212-355-372-387-408)
-					btnNewButton.setEnabled(true);
+					//btnNewButton.setEnabled(true);
 					btnNewButton_1.setEnabled(true);
 					btnNewButton_2.setEnabled(true);
 					btnNewButton_3.setEnabled(true);
 					btnNewButton_4.setEnabled(true);
 					btnNewButton_5.setEnabled(true);
-					btnNewButton_6.setEnabled(true);
+					//btnNewButton_6.setEnabled(true);
 					btnGetArraySize.setEnabled(true);
+					btnGoogleImage.setEnabled(true);
 
 					tryConnectSelect("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
 							"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "SELECT hash FROM hash_info WHERE sfw = 0 AND nsfw = 0 AND banned = 0");
@@ -372,14 +407,15 @@ public class Administration {
 				} else if (btnCheckButton_1.getSelection()) {
 					txtTest.setText("All Of The Fuckers Selected");
 					
-					btnNewButton.setEnabled(true);
+					//btnNewButton.setEnabled(true);
 					btnNewButton_1.setEnabled(true);
 					btnNewButton_2.setEnabled(true);
 					btnNewButton_3.setEnabled(true);
 					btnNewButton_4.setEnabled(true);
 					btnNewButton_5.setEnabled(true);
-					btnNewButton_6.setEnabled(true);
+					//btnNewButton_6.setEnabled(true);
 					btnGetArraySize.setEnabled(true);
+					btnGoogleImage.setEnabled(true);
 					
 					tryConnectSelect("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
 							"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "SELECT hash FROM hash_info");
@@ -387,14 +423,15 @@ public class Administration {
 				} else if (btnCheckButton_2.getSelection()) {
 					txtTest.setText("Banned Ones Selected");
 					
-					btnNewButton.setEnabled(true);
+					//btnNewButton.setEnabled(true);
 					btnNewButton_1.setEnabled(true);
 					btnNewButton_2.setEnabled(true);
 					btnNewButton_3.setEnabled(true);
 					btnNewButton_4.setEnabled(true);
 					btnNewButton_5.setEnabled(true);
-					btnNewButton_6.setEnabled(true);
+					//btnNewButton_6.setEnabled(true);
 					btnGetArraySize.setEnabled(true);
+					btnGoogleImage.setEnabled(true);
 
 					tryConnectSelect("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
 							"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "SELECT hash FROM hash_info WHERE banned = 1");
@@ -402,14 +439,15 @@ public class Administration {
 				} else if (btnCheckButton_3.getSelection()) {
 					txtTest.setText("NSFW Ones Selected");
 
-					btnNewButton.setEnabled(true);
+					//btnNewButton.setEnabled(true);
 					btnNewButton_1.setEnabled(true);
 					btnNewButton_2.setEnabled(true);
 					btnNewButton_3.setEnabled(true);
 					btnNewButton_4.setEnabled(true);
 					btnNewButton_5.setEnabled(true);
-					btnNewButton_6.setEnabled(true);
+					//btnNewButton_6.setEnabled(true);
 					btnGetArraySize.setEnabled(true);
+					btnGoogleImage.setEnabled(true);
 
 					tryConnectSelect("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
 							"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "SELECT hash FROM hash_info WHERE nsfw = 1");
@@ -479,4 +517,7 @@ public class Administration {
 			}
 		});
 	}
+	
+	
+	
 }
