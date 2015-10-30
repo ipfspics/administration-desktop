@@ -21,9 +21,53 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 
 public class SQLConnection {
 	//TODO : Move SQL connection related code to this class
+	
+	private static Connection conn;
+	
+	public void dbConnect(String pURL) {
+		try {
+			conn = DriverManager.getConnection(pURL+PrivateVariables.getDbName(), PrivateVariables.getDbUser(), PrivateVariables.getDbPswd());
+			
+		}
+		catch (Exception e) {
+			
+		}
+	}
+	
+	public void dbClose() {
+		try {
+			
+			if (conn != null) {
+				conn.close();
+			}
+		}
+		catch (Exception e) {
+			
+		}
+	}
+	
+	public void queryUpdate(String query) {
+		try {
+			
+		}
+		catch (Exception e) {
+			
+		}
+	}
+	
+	public void querySelect(String query) {
+		try {
+			
+		}
+		catch (Exception e) {
+			
+		}
+	}
+	
 }
