@@ -196,37 +196,37 @@ public class Administration {
 		
 		//Button Creator==================================
 		
-		Button btnNewButton = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-		btnNewButton.setBounds(10, 722, 93, 29);
-		btnNewButton.setText("Previous");
+		Button btnNewButtonPrevious = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButtonPrevious.setBounds(10, 722, 93, 29);
+		btnNewButtonPrevious.setText("Previous");
 		//TODO : Fix this button
-		btnNewButton.setEnabled(false);
+		btnNewButtonPrevious.setEnabled(false);
 		
-		Button btnNewButton_1 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-		btnNewButton_1.setBounds(1281, 722, 93, 29);
-		btnNewButton_1.setText("Next");
+		Button btnNewButtonNext = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButtonNext.setBounds(1281, 722, 93, 29);
+		btnNewButtonNext.setText("Next");
 		
-		Button btnNewButton_2 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-		btnNewButton_2.setBounds(570, 722, 155, 29);
-		btnNewButton_2.setText("SFW");
+		Button btnNewButtonSFW = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButtonSFW.setBounds(570, 722, 155, 29);
+		btnNewButtonSFW.setText("SFW");
 		
-		Button btnNewButton_3 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-		btnNewButton_3.setBounds(404, 722, 160, 29);
-		btnNewButton_3.setText("NSFW");
+		Button btnNewButtonNSFW = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButtonNSFW.setBounds(404, 722, 160, 29);
+		btnNewButtonNSFW.setText("NSFW");
 		
-		Button btnNewButton_4 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-		btnNewButton_4.setBounds(731, 722, 61, 29);
-		btnNewButton_4.setText("Ban");
+		Button btnNewButtonBan = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButtonBan.setBounds(731, 722, 61, 29);
+		btnNewButtonBan.setText("Ban");
 		
-		Button btnNewButton_5 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-		btnNewButton_5.setBounds(798, 722, 477, 29);
-		btnNewButton_5.setText("Copy To Clipboard");
+		Button btnNewButtonCTC = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButtonCTC.setBounds(798, 722, 477, 29);
+		btnNewButtonCTC.setText("Copy To Clipboard");
 		
-		Button btnNewButton_6 = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-		btnNewButton_6.setBounds(109, 722, 74, 29);
-		btnNewButton_6.setText("Forget");
+		Button btnNewButtonForget = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+		btnNewButtonForget.setBounds(109, 722, 74, 29);
+		btnNewButtonForget.setText("Forget");
 		//TODO : Fix this button
-		btnNewButton_6.setEnabled(false);
+		btnNewButtonForget.setEnabled(false);
 		
 		Button btnGetArraySize = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnGetArraySize.setBounds(785, 768, 119, 29);
@@ -237,18 +237,18 @@ public class Administration {
 		btnGoogleImage.setText("Google Image");
 		
 		//Disables all buttons (TODO : Optimize this - Other class/method) ============================
-		btnNewButton.setEnabled(false);
-		btnNewButton_1.setEnabled(false);
-		btnNewButton_2.setEnabled(false);
-		btnNewButton_3.setEnabled(false);
-		btnNewButton_4.setEnabled(false);
-		btnNewButton_5.setEnabled(false);
-		btnNewButton_6.setEnabled(false);
+		btnNewButtonPrevious.setEnabled(false);
+		btnNewButtonNext.setEnabled(false);
+		btnNewButtonSFW.setEnabled(false);
+		btnNewButtonNSFW.setEnabled(false);
+		btnNewButtonBan.setEnabled(false);
+		btnNewButtonCTC.setEnabled(false);
+		btnNewButtonForget.setEnabled(false);
 		btnGetArraySize.setEnabled(false);
 		
 		//Button Action Listener==================================
 		
-		btnNewButton.addSelectionListener(new SelectionAdapter() {
+		btnNewButtonPrevious.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				arrayIndex--;
@@ -257,13 +257,13 @@ public class Administration {
 			}
 		});
 		
-		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+		btnNewButtonNext.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				btnNewButton_2.setEnabled(true);
-				btnNewButton_3.setEnabled(true);
-				btnNewButton_4.setEnabled(true);
+				btnNewButtonSFW.setEnabled(true);
+				btnNewButtonNSFW.setEnabled(true);
+				btnNewButtonBan.setEnabled(true);
 				
 				if (hashArray.size() == 0 || arrayIndex == hashArray.size()) {
 					browser.setUrl("http://perdu.com");
@@ -275,7 +275,7 @@ public class Administration {
 			
 		});
 		
-		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
+		btnNewButtonSFW.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				tryConnectUpdate("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
@@ -283,15 +283,15 @@ public class Administration {
 				arrayIndex++;
 				
 				if (con == true) {
-					btnNewButton_2.setEnabled(false);
-					btnNewButton_3.setEnabled(false);
-					btnNewButton_4.setEnabled(false);
+					btnNewButtonSFW.setEnabled(false);
+					btnNewButtonNSFW.setEnabled(false);
+					btnNewButtonBan.setEnabled(false);
 				}
 				
 			}
 		});
 		
-		btnNewButton_3.addSelectionListener(new SelectionAdapter() {
+		btnNewButtonNSFW.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				tryConnectUpdate("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
@@ -299,14 +299,14 @@ public class Administration {
 				arrayIndex++;
 				
 				if (con == true) {
-					btnNewButton_2.setEnabled(false);
-					btnNewButton_3.setEnabled(false);
-					btnNewButton_4.setEnabled(false);
+					btnNewButtonSFW.setEnabled(false);
+					btnNewButtonNSFW.setEnabled(false);
+					btnNewButtonBan.setEnabled(false);
 				}
 			}
 		});
 		
-		btnNewButton_4.addSelectionListener(new SelectionAdapter() {
+		btnNewButtonBan.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				tryConnectUpdate("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
@@ -314,14 +314,14 @@ public class Administration {
 				arrayIndex++;
 				
 				if (con == true) {
-					btnNewButton_2.setEnabled(false);
-					btnNewButton_3.setEnabled(false);
-					btnNewButton_4.setEnabled(false);
+					btnNewButtonSFW.setEnabled(false);
+					btnNewButtonNSFW.setEnabled(false);
+					btnNewButtonBan.setEnabled(false);
 				}
 			}
 		});
 		
-		btnNewButton_5.addSelectionListener(new SelectionAdapter() {
+		btnNewButtonCTC.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				StringSelection stringSelection = new StringSelection(hashURL);
@@ -330,7 +330,7 @@ public class Administration {
 			}
 		});
 		
-		btnNewButton_6.addSelectionListener(new SelectionAdapter() {
+		btnNewButtonForget.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				tryConnectUpdate("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
@@ -390,13 +390,13 @@ public class Administration {
 					txtTest.setText("Not Administrated Selected");
 					
 					//TODO : Optimize other class/method (line 212-355-372-387-408)
-					//btnNewButton.setEnabled(true);
-					btnNewButton_1.setEnabled(true);
-					btnNewButton_2.setEnabled(true);
-					btnNewButton_3.setEnabled(true);
-					btnNewButton_4.setEnabled(true);
-					btnNewButton_5.setEnabled(true);
-					//btnNewButton_6.setEnabled(true);
+					//btnNewButtonPrevious.setEnabled(true);
+					btnNewButtonNext.setEnabled(true);
+					btnNewButtonSFW.setEnabled(true);
+					btnNewButtonNSFW.setEnabled(true);
+					btnNewButtonBan.setEnabled(true);
+					btnNewButtonCTC.setEnabled(true);
+					//btnNewButtonForget.setEnabled(true);
 					btnGetArraySize.setEnabled(true);
 					btnGoogleImage.setEnabled(true);
 
@@ -407,13 +407,13 @@ public class Administration {
 				} else if (btnCheckButton_1.getSelection()) {
 					txtTest.setText("All Of The Fuckers Selected");
 					
-					//btnNewButton.setEnabled(true);
-					btnNewButton_1.setEnabled(true);
-					btnNewButton_2.setEnabled(true);
-					btnNewButton_3.setEnabled(true);
-					btnNewButton_4.setEnabled(true);
-					btnNewButton_5.setEnabled(true);
-					//btnNewButton_6.setEnabled(true);
+					//btnNewButtonPrevious.setEnabled(true);
+					btnNewButtonNext.setEnabled(true);
+					btnNewButtonSFW.setEnabled(true);
+					btnNewButtonNSFW.setEnabled(true);
+					btnNewButtonBan.setEnabled(true);
+					btnNewButtonCTC.setEnabled(true);
+					//btnNewButtonForget.setEnabled(true);
 					btnGetArraySize.setEnabled(true);
 					btnGoogleImage.setEnabled(true);
 					
@@ -423,13 +423,13 @@ public class Administration {
 				} else if (btnCheckButton_2.getSelection()) {
 					txtTest.setText("Banned Ones Selected");
 					
-					//btnNewButton.setEnabled(true);
-					btnNewButton_1.setEnabled(true);
-					btnNewButton_2.setEnabled(true);
-					btnNewButton_3.setEnabled(true);
-					btnNewButton_4.setEnabled(true);
-					btnNewButton_5.setEnabled(true);
-					//btnNewButton_6.setEnabled(true);
+					//btnNewButtonPrevious.setEnabled(true);
+					btnNewButtonNext.setEnabled(true);
+					btnNewButtonSFW.setEnabled(true);
+					btnNewButtonNSFW.setEnabled(true);
+					btnNewButtonBan.setEnabled(true);
+					btnNewButtonCTC.setEnabled(true);
+					//btnNewButtonForget.setEnabled(true);
 					btnGetArraySize.setEnabled(true);
 					btnGoogleImage.setEnabled(true);
 
@@ -439,13 +439,13 @@ public class Administration {
 				} else if (btnCheckButton_3.getSelection()) {
 					txtTest.setText("NSFW Ones Selected");
 
-					//btnNewButton.setEnabled(true);
-					btnNewButton_1.setEnabled(true);
-					btnNewButton_2.setEnabled(true);
-					btnNewButton_3.setEnabled(true);
-					btnNewButton_4.setEnabled(true);
-					btnNewButton_5.setEnabled(true);
-					//btnNewButton_6.setEnabled(true);
+					//btnNewButtonPrevious.setEnabled(true);
+					btnNewButtonNext.setEnabled(true);
+					btnNewButtonSFW.setEnabled(true);
+					btnNewButtonNSFW.setEnabled(true);
+					btnNewButtonBan.setEnabled(true);
+					btnNewButtonCTC.setEnabled(true);
+					//btnNewButtonForget.setEnabled(true);
 					btnGetArraySize.setEnabled(true);
 					btnGoogleImage.setEnabled(true);
 
@@ -461,13 +461,13 @@ public class Administration {
 		mntmResetQuery.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				btnNewButton.setEnabled(false);
-				btnNewButton_1.setEnabled(false);
-				btnNewButton_2.setEnabled(false);
-				btnNewButton_3.setEnabled(false);
-				btnNewButton_4.setEnabled(false);
-				btnNewButton_5.setEnabled(false);
-				btnNewButton_6.setEnabled(false);
+				btnNewButtonPrevious.setEnabled(false);
+				btnNewButtonNext.setEnabled(false);
+				btnNewButtonSFW.setEnabled(false);
+				btnNewButtonNSFW.setEnabled(false);
+				btnNewButtonBan.setEnabled(false);
+				btnNewButtonCTC.setEnabled(false);
+				btnNewButtonForget.setEnabled(false);
 				btnGetArraySize.setEnabled(false);
 				hashArray.clear();
 				hashURL = "http://ipfs.pics/";
