@@ -27,20 +27,25 @@ import java.util.ArrayList;
 
 public class SQLConnection {
 	//TODO : Move SQL connection related code to this class
+	private boolean updated = false;
 	
-	private static Connection conn;
+	private Connection conn;
 	
-	public void dbConnect(String pURL) {
+	private String URL = "jdbc:mysql://ipfs.pics:3306/";
+	private String driver = "com.mysql.jdbc.Driver";
+	
+	public void connect() {
 		try {
-			conn = DriverManager.getConnection(pURL+PrivateVariables.getDbName(), PrivateVariables.getDbUser(), PrivateVariables.getDbPswd());
+			Class.forName(this.driver).newInstance();
+			conn = DriverManager.getConnection(this.URL+PrivateVariables.getDbName(), PrivateVariables.getDbUser(), PrivateVariables.getDbPswd());
 			
 		}
 		catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
-	public void dbClose() {
+	public void close() {
 		try {
 			
 			if (conn != null) {
@@ -48,26 +53,45 @@ public class SQLConnection {
 			}
 		}
 		catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
 	public void queryUpdate(String query) {
 		try {
+			Statement st = conn.createStatement();
 			
+			int val = st.executeUpdate(query);
+			if (val == 0)
+				System.out.println("Couldn't reach database, didn't update value");
+			else {
+				System.out.println("Updated Succesfully");
+				updated = true;
+			}
 		}
 		catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
-	public void querySelect(String query) {
+	public void querySelect(String query, ArrayList<String> pHashArray) {
 		try {
+			Statement st = conn.createStatement();
 			
+			ResultSet res = st.executeQuery(query);
+			
+			while (res.next()) {
+				String hash = res.getString("hash");
+				pHashArray.add(hash);
+			}
 		}
 		catch (Exception e) {
-			
+			e.printStackTrace();
 		}
+	}
+	
+	public boolean getUpdated() {
+		return updated;
 	}
 	
 }

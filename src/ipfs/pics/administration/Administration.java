@@ -18,6 +18,7 @@
 
 package ipfs.pics.administration;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
 
@@ -39,12 +40,14 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
 public class Administration {
 
-	protected Shell shlIpfspicsAdministrationTool;
+	protected Shell shlIpfspicsAdministrationTool = new Shell();
+
 
 	/**
 	 * Open the window.
@@ -66,57 +69,8 @@ public class Administration {
 	public int hashArrayIndex = 0;
 	public ArrayList<String> hashArray = new ArrayList<String>();
 	public boolean con = false; 
-	public void tryConnectSelect(String url, String dbName, String driver, String userName, String password, String query) {
-		try {
-			
-			//Tries to connect to the MySQL database dbName
-			Class.forName(driver).newInstance();
-			Connection conn = DriverManager.getConnection(url+dbName, userName, password);
-			
-			//Statement st to select the correct hashes that haven't been backed up yet
-			Statement st = conn.createStatement();
-			
-			//Executes wanted command
-			ResultSet res = st.executeQuery(query);
-			
-			while (res.next()) {
-				String hash = res.getString("hash");
-				hashArray.add(hash);
-			}
-			
-			conn.close();
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
-	public void tryConnectUpdate (String url, String dbName, String driver, String userName, String password, String query) {
-		try {
-		
-			//Tries to connect to the MySQL database dbName
-			Class.forName(driver).newInstance();
-			Connection conn = DriverManager.getConnection(url+dbName, userName, password);
-		
-			//Statement st to select the correct hashes that haven't been backed up yet
-			Statement st = conn.createStatement();
-		
-			//Executes wanted command
-			int val = st.executeUpdate(query);
-			if (val == 0)
-				System.out.println("Couldn't reach database, didn't update value");
-			else if (val == 1) {
-				System.out.println("Updated succesfully");
-				con = true;
-			}
-				
-		
-			conn.close();
-		
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
+	SQLConnection dbConnection = new SQLConnection();
 	
 	//SWT Window app =================================================
 	
@@ -124,14 +78,40 @@ public class Administration {
 	public int arrayIndex = 0;
 	private Text txtTest;
 	private Text textNbOfHashes;
+
+	//Button Creator==================================
+	
+	Button btnNewButtonPrevious = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	Button btnNewButtonNext = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	Button btnNewButtonSFW = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	Button btnNewButtonNSFW = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	Button btnNewButtonBan = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	Button btnNewButtonCTC = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	Button btnNewButtonForget = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	Button btnGetArraySize = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	Button btnGoogleImage = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	
+	//CheckButton Creator==================================
+
+	Button btnCheckButton = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
+	Button btnCheckButton_1 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
+	Button btnCheckButton_2 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
+	Button btnCheckButton_3 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
 	
 	/**
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shlIpfspicsAdministrationTool = new Shell();
 		shlIpfspicsAdministrationTool.setSize(1400, 875);
 		shlIpfspicsAdministrationTool.setText("ipfs.pics Administration Tool");
+		
+		shlIpfspicsAdministrationTool.addListener(SWT.Close, new Listener() {
+			public void handleEvent(Event event) {
+				dbConnection.close();
+			}
+		});
+
+		dbConnection.connect();
 		
 		txtTest = new Text(shlIpfspicsAdministrationTool, SWT.BORDER);
 		txtTest.setText("");
@@ -163,75 +143,54 @@ public class Administration {
 		browser.setUrl(hashURL);
 		browser.setBounds(10, 10, 1364, 706);
 		
-		//CheckButton Creator==================================
+		//Check buttons display initializer===============================
 		
-		Button btnCheckButton = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
 		btnCheckButton.setBounds(119, 757, 160, 22);
 		btnCheckButton.setText("Not Administrated");
 		
-		Button btnCheckButton_1 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
 		btnCheckButton_1.setBounds(119, 790, 160, 22);
 		btnCheckButton_1.setText("All The Hashes");
 		
-		Button btnCheckButton_2 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
 		btnCheckButton_2.setBounds(285, 757, 150, 22);
 		btnCheckButton_2.setText("Only Banned Ones");
 		
-		Button btnCheckButton_3 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
 		btnCheckButton_3.setBounds(285, 790, 150, 22);
 		btnCheckButton_3.setText("Only NSFW Ones");
 		
-		//Button Creator==================================
+		//Button display initalizing======================================
 		
-		Button btnNewButtonPrevious = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButtonPrevious.setBounds(10, 722, 93, 29);
 		btnNewButtonPrevious.setText("Previous");
 		//TODO : Fix this button
 		btnNewButtonPrevious.setEnabled(false);
 		
-		Button btnNewButtonNext = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButtonNext.setBounds(1281, 722, 93, 29);
 		btnNewButtonNext.setText("Next");
 		
-		Button btnNewButtonSFW = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButtonSFW.setBounds(570, 722, 155, 29);
 		btnNewButtonSFW.setText("SFW");
 		
-		Button btnNewButtonNSFW = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButtonNSFW.setBounds(404, 722, 160, 29);
 		btnNewButtonNSFW.setText("NSFW");
 		
-		Button btnNewButtonBan = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButtonBan.setBounds(731, 722, 61, 29);
 		btnNewButtonBan.setText("Ban");
 		
-		Button btnNewButtonCTC = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButtonCTC.setBounds(798, 722, 477, 29);
 		btnNewButtonCTC.setText("Copy To Clipboard");
 		
-		Button btnNewButtonForget = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnNewButtonForget.setBounds(109, 722, 74, 29);
 		btnNewButtonForget.setText("Forget");
 		//TODO : Fix this button
 		btnNewButtonForget.setEnabled(false);
 		
-		Button btnGetArraySize = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnGetArraySize.setBounds(785, 768, 119, 29);
 		btnGetArraySize.setText("Get Array Size");
 		
-		Button btnGoogleImage = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 		btnGoogleImage.setBounds(189, 722, 209, 29);
 		btnGoogleImage.setText("Google Image");
 		
-		//Disables all buttons (TODO : Optimize this - Other class/method) ============================
-		btnNewButtonPrevious.setEnabled(false);
-		btnNewButtonNext.setEnabled(false);
-		btnNewButtonSFW.setEnabled(false);
-		btnNewButtonNSFW.setEnabled(false);
-		btnNewButtonBan.setEnabled(false);
-		btnNewButtonCTC.setEnabled(false);
-		btnNewButtonForget.setEnabled(false);
-		btnGetArraySize.setEnabled(false);
+		disableAllButtons();
 		
 		//Button Action Listener==================================
 		
@@ -265,14 +224,13 @@ public class Administration {
 		btnNewButtonSFW.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				tryConnectUpdate("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
-						"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "UPDATE hash_info SET sfw = 1, nsfw = 0, banned = 0 WHERE hash = '" + hashArray.get(arrayIndex) + "'");
+				
+				dbConnection.queryUpdate("UPDATE hash_info SET sfw = 1, nsfw = 0, banned = 0 WHERE hash = '" + hashArray.get(arrayIndex) + "'");
+				
 				arrayIndex++;
 				
-				if (con == true) {
+				if (dbConnection.getUpdated() == true) {
 					btnNewButtonSFW.setEnabled(false);
-					btnNewButtonNSFW.setEnabled(false);
-					btnNewButtonBan.setEnabled(false);
 				}
 				
 			}
@@ -281,14 +239,13 @@ public class Administration {
 		btnNewButtonNSFW.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				tryConnectUpdate("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
-						"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "UPDATE hash_info SET sfw = 0, nsfw = 1, banned = 0 WHERE hash = '" + hashArray.get(arrayIndex) + "'");
+				
+				dbConnection.queryUpdate("UPDATE hash_info SET sfw = 0, nsfw = 1, banned = 0 WHERE hash = '" + hashArray.get(arrayIndex) + "'");
+				
 				arrayIndex++;
 				
-				if (con == true) {
-					btnNewButtonSFW.setEnabled(false);
+				if (dbConnection.getUpdated() == true) {
 					btnNewButtonNSFW.setEnabled(false);
-					btnNewButtonBan.setEnabled(false);
 				}
 			}
 		});
@@ -296,13 +253,12 @@ public class Administration {
 		btnNewButtonBan.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				tryConnectUpdate("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
-						"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "UPDATE hash_info SET sfw = 0, nsfw = 0, banned = 1 WHERE hash = '" + hashArray.get(arrayIndex) + "'");
+				
+				dbConnection.queryUpdate("UPDATE hash_info SET sfw = 0, nsfw = 0, banned = 1 WHERE hash = '" + hashArray.get(arrayIndex) + "'");
+				
 				arrayIndex++;
 				
-				if (con == true) {
-					btnNewButtonSFW.setEnabled(false);
-					btnNewButtonNSFW.setEnabled(false);
+				if (dbConnection.getUpdated() == true) {
 					btnNewButtonBan.setEnabled(false);
 				}
 			}
@@ -320,8 +276,9 @@ public class Administration {
 		btnNewButtonForget.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				tryConnectUpdate("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
-						"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "DELETE FROM hash_info WHERE hash = '" + hashArray.get(arrayIndex) + "'");
+				
+				
+				
 				hashArray.remove(arrayIndex);
 				arrayIndex++;
 			}
@@ -340,29 +297,33 @@ public class Administration {
 		btnGoogleImage.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (!java.awt.Desktop.isDesktopSupported()) {
-					System.out.println("No. >:(");
-					System.exit(1);
+				String OS = System.getProperty("os.name").toLowerCase();
+				
+				if (OS.indexOf("win") >= 0) {
+					if (!java.awt.Desktop.isDesktopSupported()) {
+						System.out.println("No. >:(");
+						System.exit(1);
+					}
+					
+					java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+					
+	
+					if( !desktop.isSupported( java.awt.Desktop.Action.BROWSE ) ) {
+	
+			            System.err.println( "Desktop doesn't support the browse action (fatal)");
+			            System.exit( 1 );
+			        }
+					
+					try {
+	
+		                java.net.URI uri = new java.net.URI("https://images.google.com/searchbyimage?image_url=http://ipfs.pics/ipfs/" + hashArray.get(arrayIndex));
+		                desktop.browse( uri );
+		            }
+		            catch (Exception e1) {
+	
+		                System.err.println( e1.getMessage() );
+		            }
 				}
-				
-				java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
-				
-
-				if( !desktop.isSupported( java.awt.Desktop.Action.BROWSE ) ) {
-
-		            System.err.println( "Desktop doesn't support the browse action (fatal)");
-		            System.exit( 1 );
-		        }
-				
-				try {
-
-	                java.net.URI uri = new java.net.URI("https://images.google.com/searchbyimage?image_url=http://ipfs.pics/ipfs/" + hashArray.get(arrayIndex));
-	                desktop.browse( uri );
-	            }
-	            catch (Exception e1) {
-
-	                System.err.println( e1.getMessage() );
-	            }
 				
 			}
 		});
@@ -376,68 +337,30 @@ public class Administration {
 				if (btnCheckButton.getSelection()) {
 					txtTest.setText("Not Administrated Selected");
 					
-					//TODO : Optimize other class/method (line 212-355-372-387-408)
-					//btnNewButtonPrevious.setEnabled(true);
-					btnNewButtonNext.setEnabled(true);
-					btnNewButtonSFW.setEnabled(true);
-					btnNewButtonNSFW.setEnabled(true);
-					btnNewButtonBan.setEnabled(true);
-					btnNewButtonCTC.setEnabled(true);
-					//btnNewButtonForget.setEnabled(true);
-					btnGetArraySize.setEnabled(true);
-					btnGoogleImage.setEnabled(true);
+					enableAllButtons();
 
-					tryConnectSelect("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
-							"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "SELECT hash FROM hash_info WHERE sfw = 0 AND nsfw = 0 AND banned = 0");
-					
+					dbConnection.querySelect("SELECT * FROM hash_info WHERE sfw = 0 AND nsfw = 0 AND banned = 0", hashArray);
 					
 				} else if (btnCheckButton_1.getSelection()) {
 					txtTest.setText("All Of The Fuckers Selected");
 					
-					//btnNewButtonPrevious.setEnabled(true);
-					btnNewButtonNext.setEnabled(true);
-					btnNewButtonSFW.setEnabled(true);
-					btnNewButtonNSFW.setEnabled(true);
-					btnNewButtonBan.setEnabled(true);
-					btnNewButtonCTC.setEnabled(true);
-					//btnNewButtonForget.setEnabled(true);
-					btnGetArraySize.setEnabled(true);
-					btnGoogleImage.setEnabled(true);
+					enableAllButtons();
 					
-					tryConnectSelect("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
-							"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "SELECT hash FROM hash_info");
+					dbConnection.querySelect("SELECT * FROM hash_info", hashArray);
 					
 				} else if (btnCheckButton_2.getSelection()) {
 					txtTest.setText("Banned Ones Selected");
 					
-					//btnNewButtonPrevious.setEnabled(true);
-					btnNewButtonNext.setEnabled(true);
-					btnNewButtonSFW.setEnabled(true);
-					btnNewButtonNSFW.setEnabled(true);
-					btnNewButtonBan.setEnabled(true);
-					btnNewButtonCTC.setEnabled(true);
-					//btnNewButtonForget.setEnabled(true);
-					btnGetArraySize.setEnabled(true);
-					btnGoogleImage.setEnabled(true);
+					enableAllButtons();
 
-					tryConnectSelect("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
-							"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "SELECT hash FROM hash_info WHERE banned = 1");
+					dbConnection.querySelect("SELECT * FROM hash_info WHERE banned = 1", hashArray);
 					
 				} else if (btnCheckButton_3.getSelection()) {
 					txtTest.setText("NSFW Ones Selected");
 
-					//btnNewButtonPrevious.setEnabled(true);
-					btnNewButtonNext.setEnabled(true);
-					btnNewButtonSFW.setEnabled(true);
-					btnNewButtonNSFW.setEnabled(true);
-					btnNewButtonBan.setEnabled(true);
-					btnNewButtonCTC.setEnabled(true);
-					//btnNewButtonForget.setEnabled(true);
-					btnGetArraySize.setEnabled(true);
-					btnGoogleImage.setEnabled(true);
+					enableAllButtons();
 
-					tryConnectSelect("jdbc:mysql://ipfs.pics:3306/", PrivateVariables.getDbName(),
-							"com.mysql.jdbc.Driver", PrivateVariables.getDbUser(), PrivateVariables.getDbPswd(), "SELECT hash FROM hash_info WHERE nsfw = 1");
+					dbConnection.querySelect("SELECT * FROM hash_info WHERE nsfw = 1", hashArray);
 					
 				} else {
 					txtTest.setText("Please select what hashes you want.");
@@ -448,14 +371,7 @@ public class Administration {
 		mntmResetQuery.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				btnNewButtonPrevious.setEnabled(false);
-				btnNewButtonNext.setEnabled(false);
-				btnNewButtonSFW.setEnabled(false);
-				btnNewButtonNSFW.setEnabled(false);
-				btnNewButtonBan.setEnabled(false);
-				btnNewButtonCTC.setEnabled(false);
-				btnNewButtonForget.setEnabled(false);
-				btnGetArraySize.setEnabled(false);
+				disableAllButtons();
 				hashArray.clear();
 				hashURL = "http://ipfs.pics/";
 				browser.setUrl(hashURL);
@@ -505,6 +421,32 @@ public class Administration {
 		});
 	}
 	
+	/**
+	 * Enables all the buttons
+	 */
+	public void enableAllButtons() {
+		btnNewButtonPrevious.setEnabled(true);
+		btnNewButtonNext.setEnabled(true);
+		btnNewButtonSFW.setEnabled(true);
+		btnNewButtonNSFW.setEnabled(true);
+		btnNewButtonBan.setEnabled(true);
+		btnNewButtonCTC.setEnabled(true);
+		btnNewButtonForget.setEnabled(true);
+		btnGetArraySize.setEnabled(true);
+	}
 	
+	/**
+	 * Disables all the buttons
+	 */
+	public void disableAllButtons() {
+		btnNewButtonPrevious.setEnabled(false);
+		btnNewButtonNext.setEnabled(false);
+		btnNewButtonSFW.setEnabled(false);
+		btnNewButtonNSFW.setEnabled(false);
+		btnNewButtonBan.setEnabled(false);
+		btnNewButtonCTC.setEnabled(false);
+		btnNewButtonForget.setEnabled(false);
+		btnGetArraySize.setEnabled(false);
+	}
 	
 }
