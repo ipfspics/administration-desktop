@@ -210,15 +210,19 @@ public class Administration {
 				btnNewButtonSFW.setEnabled(true);
 				btnNewButtonNSFW.setEnabled(true);
 				btnNewButtonBan.setEnabled(true);
+
+				arrayIndex++;
 				
 				if (hashArray.size() == 0 || arrayIndex == hashArray.size()) {
 					browser.setUrl("http://perdu.com");
+				} else if(btnCheckButton_2.getSelection()) {
+					hashURL = "http://ipfs.pics/ipfs/" + hashArray.get(arrayIndex);
+					browser.setUrl(hashURL);
 				} else {
 					hashURL = "http://ipfs.pics/" + hashArray.get(arrayIndex);
 					browser.setUrl(hashURL);
 				}
 			}
-			
 		});
 		
 		btnNewButtonSFW.addSelectionListener(new SelectionAdapter() {
@@ -226,8 +230,6 @@ public class Administration {
 			public void widgetSelected(SelectionEvent e) {
 				
 				dbConnection.queryUpdate("UPDATE hash_info SET sfw = 1, nsfw = 0, banned = 0 WHERE hash = '" + hashArray.get(arrayIndex) + "'");
-				
-				arrayIndex++;
 				
 				if (dbConnection.getUpdated() == true) {
 					btnNewButtonSFW.setEnabled(false);
@@ -242,8 +244,6 @@ public class Administration {
 				
 				dbConnection.queryUpdate("UPDATE hash_info SET sfw = 0, nsfw = 1, banned = 0 WHERE hash = '" + hashArray.get(arrayIndex) + "'");
 				
-				arrayIndex++;
-				
 				if (dbConnection.getUpdated() == true) {
 					btnNewButtonNSFW.setEnabled(false);
 				}
@@ -255,8 +255,6 @@ public class Administration {
 			public void widgetSelected(SelectionEvent e) {
 				
 				dbConnection.queryUpdate("UPDATE hash_info SET sfw = 0, nsfw = 0, banned = 1 WHERE hash = '" + hashArray.get(arrayIndex) + "'");
-				
-				arrayIndex++;
 				
 				if (dbConnection.getUpdated() == true) {
 					btnNewButtonBan.setEnabled(false);
@@ -277,20 +275,15 @@ public class Administration {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				
-				
-				
 				hashArray.remove(arrayIndex);
-				arrayIndex++;
 			}
 		});
 
 		btnGetArraySize.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (hashArray.size() != 0) {
-					String arraySize = String.valueOf(hashArray.size()); 
-					textNbOfHashes.setText(arraySize);
-				}
+				String arraySize = String.valueOf(hashArray.size()); 
+				textNbOfHashes.setText(arraySize);
 			}
 		});
 		
@@ -315,8 +308,7 @@ public class Administration {
 			        }
 					
 					try {
-	
-		                java.net.URI uri = new java.net.URI("https://images.google.com/searchbyimage?image_url=http://ipfs.pics/ipfs/" + hashArray.get(arrayIndex));
+						java.net.URI uri = new java.net.URI("https://images.google.com/searchbyimage?image_url=http://ipfs.pics/ipfs/" + hashArray.get(arrayIndex));
 		                desktop.browse( uri );
 		            }
 		            catch (Exception e1) {
@@ -341,8 +333,10 @@ public class Administration {
 
 					dbConnection.querySelect("SELECT * FROM hash_info WHERE sfw = 0 AND nsfw = 0 AND banned = 0", hashArray);
 					
+					arrayIndex = -1;
+					
 				} else if (btnCheckButton_1.getSelection()) {
-					txtTest.setText("All Of The Fuckers Selected");
+					txtTest.setText("All Hashes Selected");
 					
 					enableAllButtons();
 					
@@ -431,7 +425,7 @@ public class Administration {
 		btnNewButtonNSFW.setEnabled(true);
 		btnNewButtonBan.setEnabled(true);
 		btnNewButtonCTC.setEnabled(true);
-		btnNewButtonForget.setEnabled(true);
+		//btnNewButtonForget.setEnabled(true);
 		btnGetArraySize.setEnabled(true);
 	}
 	
