@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.net.URI;
 
 import org.eclipse.swt.SWT;
@@ -102,7 +103,12 @@ public class Administration {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shlIpfspicsAdministrationTool.setSize(1400, 875);
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		
+		shlIpfspicsAdministrationTool.setSize((int)(width - (width/10)), (int)(height - (height/10)));
 		shlIpfspicsAdministrationTool.setText("ipfs.pics Administration Tool");
 		
 		shlIpfspicsAdministrationTool.addListener(SWT.Close, new Listener() {
@@ -141,7 +147,7 @@ public class Administration {
 		
 		Browser browser = new Browser(shlIpfspicsAdministrationTool, SWT.NONE);
 		browser.setUrl(hashURL);
-		browser.setBounds(10, 10, 1364, 706);
+		browser.setBounds(10, 10, (int)(width - ((width/8))), (int)(height - ((height/10)*2)));
 		
 		//Check buttons display initializer===============================
 		
