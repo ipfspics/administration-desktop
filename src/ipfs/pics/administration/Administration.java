@@ -77,7 +77,6 @@ public class Administration {
 	
 	public String hashURL = "http://ipfs.pics";
 	public int arrayIndex = 0;
-	private Text txtTest;
 	private Text textNbOfHashes;
 
 	//Button Creator==================================
@@ -89,7 +88,6 @@ public class Administration {
 	Button btnNewButtonBan = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 	Button btnNewButtonCTC = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 	Button btnNewButtonForget = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-	Button btnGetArraySize = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 	Button btnGoogleImage = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
 	
 	//CheckButton Creator==================================
@@ -108,7 +106,11 @@ public class Administration {
 		double width = screenSize.getWidth();
 		double height = screenSize.getHeight();
 		
-		shlIpfspicsAdministrationTool.setSize((int)(width - (width/10)), (int)(height - (height/10)));
+		int windowWidth = (int) (width - (width/10));
+		int windowHeight = (int)(height - (height/10));
+		int topBarSize = 59;
+		
+		shlIpfspicsAdministrationTool.setSize(windowWidth, windowHeight);
 		shlIpfspicsAdministrationTool.setText("ipfs.pics Administration Tool");
 		
 		shlIpfspicsAdministrationTool.addListener(SWT.Close, new Listener() {
@@ -118,13 +120,10 @@ public class Administration {
 		});
 
 		dbConnection.connect();
-		
-		txtTest = new Text(shlIpfspicsAdministrationTool, SWT.BORDER);
-		txtTest.setText("");
-		txtTest.setBounds(465, 768, 306, 29);
 
 		textNbOfHashes = new Text(shlIpfspicsAdministrationTool, SWT.BORDER);
-		textNbOfHashes.setBounds(910, 768, 331, 29);
+		textNbOfHashes.setBounds((10 + ((((windowWidth - 16) - 20)/8)*7)), (((windowHeight - topBarSize) - 100) + 29) + 20, ((windowWidth - 16) - 20)/8, 22);
+		textNbOfHashes.setEditable(false);
 
 		//Menu Creator==================================
 		
@@ -147,53 +146,50 @@ public class Administration {
 		
 		Browser browser = new Browser(shlIpfspicsAdministrationTool, SWT.NONE);
 		browser.setUrl(hashURL);
-		browser.setBounds(10, 10, (int)(width - ((width/8))), (int)(height - ((height/10)*2)));
+		browser.setBounds(10, 10, (windowWidth - 16) - 20, (windowHeight - topBarSize) - 100);
 		
 		//Check buttons display initializer===============================
 		
-		btnCheckButton.setBounds(119, 757, 160, 22);
+		btnCheckButton.setBounds(10, (((windowHeight - topBarSize) - 100) + 29) + 20, ((windowWidth - 16) - 20)/8, 22);
 		btnCheckButton.setText("Not Administrated");
 		
-		btnCheckButton_1.setBounds(119, 790, 160, 22);
+		btnCheckButton_1.setBounds(10, (((windowHeight - topBarSize) - 100) + 29) + 40, ((windowWidth - 16) - 20)/8, 22);
 		btnCheckButton_1.setText("All The Hashes");
 		
-		btnCheckButton_2.setBounds(285, 757, 150, 22);
+		btnCheckButton_2.setBounds((10 + (((windowWidth - 16) - 20)/8)), (((windowHeight - topBarSize) - 100) + 29) + 20, ((windowWidth - 16) - 20)/8, 22);
 		btnCheckButton_2.setText("Only Banned Ones");
 		
-		btnCheckButton_3.setBounds(285, 790, 150, 22);
+		btnCheckButton_3.setBounds((10 + (((windowWidth - 16) - 20)/8)), (((windowHeight - topBarSize) - 100) + 29) + 40, ((windowWidth - 16) - 20)/8, 22);
 		btnCheckButton_3.setText("Only NSFW Ones");
 		
 		//Button display initalizing======================================
 		
-		btnNewButtonPrevious.setBounds(10, 722, 93, 29);
+		btnNewButtonPrevious.setBounds(10, ((windowHeight - topBarSize) - 100) + 15, ((windowWidth - 16) - 20)/8, 29);
 		btnNewButtonPrevious.setText("Previous");
 		//TODO : Fix this button
 		btnNewButtonPrevious.setEnabled(false);
 		
-		btnNewButtonNext.setBounds(1281, 722, 93, 29);
+		btnNewButtonNext.setBounds((10 + ((((windowWidth - 16) - 20)/8)*7)), ((windowHeight - topBarSize) - 100) + 15, ((windowWidth - 16) - 20)/8, 29);
 		btnNewButtonNext.setText("Next");
 		
-		btnNewButtonSFW.setBounds(570, 722, 155, 29);
+		btnNewButtonSFW.setBounds((10 + ((((windowWidth - 16) - 20)/8)*4)), ((windowHeight - topBarSize) - 100) + 15, ((windowWidth - 16) - 20)/8, 29);
 		btnNewButtonSFW.setText("SFW");
 		
-		btnNewButtonNSFW.setBounds(404, 722, 160, 29);
+		btnNewButtonNSFW.setBounds((10 + ((((windowWidth - 16) - 20)/8)*3)), ((windowHeight - topBarSize) - 100) + 15, ((windowWidth - 16) - 20)/8, 29);
 		btnNewButtonNSFW.setText("NSFW");
 		
-		btnNewButtonBan.setBounds(731, 722, 61, 29);
+		btnNewButtonBan.setBounds((10 + ((((windowWidth - 16) - 20)/8)*5)), ((windowHeight - topBarSize) - 100) + 15, ((windowWidth - 16) - 20)/8, 29);
 		btnNewButtonBan.setText("Ban");
 		
-		btnNewButtonCTC.setBounds(798, 722, 477, 29);
+		btnNewButtonCTC.setBounds((10 + ((((windowWidth - 16) - 20)/8)*6)), ((windowHeight - topBarSize) - 100) + 15, ((windowWidth - 16) - 20)/8, 29);
 		btnNewButtonCTC.setText("Copy To Clipboard");
 		
-		btnNewButtonForget.setBounds(109, 722, 74, 29);
+		btnNewButtonForget.setBounds((10 + (((windowWidth - 16) - 20)/8)), ((windowHeight - topBarSize) - 100) + 15, ((windowWidth - 16) - 20)/8, 29);
 		btnNewButtonForget.setText("Forget");
 		//TODO : Fix this button
 		btnNewButtonForget.setEnabled(false);
 		
-		btnGetArraySize.setBounds(785, 768, 119, 29);
-		btnGetArraySize.setText("Get Array Size");
-		
-		btnGoogleImage.setBounds(189, 722, 209, 29);
+		btnGoogleImage.setBounds((10 + ((((windowWidth - 16) - 20)/8)*2)), ((windowHeight - topBarSize) - 100) + 15, ((windowWidth - 16) - 20)/8, 29);
 		btnGoogleImage.setText("Google Image");
 		
 		disableAllButtons();
@@ -284,14 +280,6 @@ public class Administration {
 				hashArray.remove(arrayIndex);
 			}
 		});
-
-		btnGetArraySize.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				String arraySize = String.valueOf(hashArray.size()); 
-				textNbOfHashes.setText(arraySize);
-			}
-		});
 		
 		btnGoogleImage.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -333,37 +321,39 @@ public class Administration {
 			public void widgetSelected(SelectionEvent e) {
 				
 				if (btnCheckButton.getSelection()) {
-					txtTest.setText("Not Administrated Selected");
-					
 					enableAllButtons();
 
 					dbConnection.querySelect("SELECT * FROM hash_info WHERE sfw = 0 AND nsfw = 0 AND banned = 0", hashArray);
 					
 					arrayIndex = -1;
 					
+					textNbOfHashes.setText(calculateNbHashes());
 				} else if (btnCheckButton_1.getSelection()) {
-					txtTest.setText("All Hashes Selected");
-					
 					enableAllButtons();
 					
 					dbConnection.querySelect("SELECT * FROM hash_info", hashArray);
 					
-				} else if (btnCheckButton_2.getSelection()) {
-					txtTest.setText("Banned Ones Selected");
+					arrayIndex = -1;
 					
+					textNbOfHashes.setText(calculateNbHashes());
+				} else if (btnCheckButton_2.getSelection()) {
 					enableAllButtons();
 
 					dbConnection.querySelect("SELECT * FROM hash_info WHERE banned = 1", hashArray);
 					
+					arrayIndex = -1;
+					
+					textNbOfHashes.setText(calculateNbHashes());
 				} else if (btnCheckButton_3.getSelection()) {
-					txtTest.setText("NSFW Ones Selected");
-
 					enableAllButtons();
 
 					dbConnection.querySelect("SELECT * FROM hash_info WHERE nsfw = 1", hashArray);
 					
+					arrayIndex = -1;
+					
+					textNbOfHashes.setText(calculateNbHashes());
 				} else {
-					txtTest.setText("Please select what hashes you want.");
+					textNbOfHashes.setText("Select an option please");
 				}
 			}
 		});
@@ -421,6 +411,12 @@ public class Administration {
 		});
 	}
 	
+	private String calculateNbHashes() {
+		String arraySize = String.valueOf(hashArray.size());
+		
+		return arraySize;
+	}
+	
 	/**
 	 * Enables all the buttons
 	 */
@@ -432,7 +428,6 @@ public class Administration {
 		btnNewButtonBan.setEnabled(true);
 		btnNewButtonCTC.setEnabled(true);
 		//btnNewButtonForget.setEnabled(true);
-		btnGetArraySize.setEnabled(true);
 	}
 	
 	/**
@@ -446,7 +441,6 @@ public class Administration {
 		btnNewButtonBan.setEnabled(false);
 		btnNewButtonCTC.setEnabled(false);
 		btnNewButtonForget.setEnabled(false);
-		btnGetArraySize.setEnabled(false);
 	}
 	
 }
