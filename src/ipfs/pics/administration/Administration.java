@@ -37,28 +37,24 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.*;
 
 public class Administration {
 
-	protected Shell shlIpfspicsAdministrationTool = new Shell();
+	protected Shell adminTool = new Shell();
+	Display display = Display.getDefault();
 
 
 	/**
 	 * Open the window.
 	 */
 	public void open() {
-		Display display = Display.getDefault();
 		createContents();
-		shlIpfspicsAdministrationTool.open();
-		shlIpfspicsAdministrationTool.layout();
-		while (!shlIpfspicsAdministrationTool.isDisposed()) {
+		adminTool.setImage(new Image(display, "C:\\Users\\GoldMember\\Documents"));
+		adminTool.open();
+		adminTool.layout();
+		while (!adminTool.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -78,24 +74,25 @@ public class Administration {
 	public String hashURL = "http://ipfs.pics";
 	public int arrayIndex = 0;
 	private Text textNbOfHashes;
+	Image appIcon = new Image(display, "");
 
 	//Button Creator==================================
 	
-	Button btnNewButtonPrevious = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-	Button btnNewButtonNext = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-	Button btnNewButtonSFW = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-	Button btnNewButtonNSFW = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-	Button btnNewButtonBan = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-	Button btnNewButtonCTC = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-	Button btnNewButtonForget = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
-	Button btnGoogleImage = new Button(shlIpfspicsAdministrationTool, SWT.NONE);
+	Button btnNewButtonPrevious = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonNext = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonSFW = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonNSFW = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonBan = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonCTC = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonForget = new Button(adminTool, SWT.NONE);
+	Button btnGoogleImage = new Button(adminTool, SWT.NONE);
 	
 	//CheckButton Creator==================================
 
-	Button btnCheckButton = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
-	Button btnCheckButton_1 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
-	Button btnCheckButton_2 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
-	Button btnCheckButton_3 = new Button(shlIpfspicsAdministrationTool, SWT.CHECK);
+	Button btnCheckButton = new Button(adminTool, SWT.CHECK);
+	Button btnCheckButton_1 = new Button(adminTool, SWT.CHECK);
+	Button btnCheckButton_2 = new Button(adminTool, SWT.CHECK);
+	Button btnCheckButton_3 = new Button(adminTool, SWT.CHECK);
 	
 	/**
 	 * Create contents of the window.
@@ -110,10 +107,10 @@ public class Administration {
 		int windowHeight = (int)(height - (height/10));
 		int topBarSize = 59;
 		
-		shlIpfspicsAdministrationTool.setSize(windowWidth, windowHeight);
-		shlIpfspicsAdministrationTool.setText("ipfs.pics Administration Tool");
+		adminTool.setSize(windowWidth, windowHeight);
+		adminTool.setText("ipfs.pics Administration Tool");
 		
-		shlIpfspicsAdministrationTool.addListener(SWT.Close, new Listener() {
+		adminTool.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
 				dbConnection.close();
 			}
@@ -121,14 +118,14 @@ public class Administration {
 
 		dbConnection.connect();
 
-		textNbOfHashes = new Text(shlIpfspicsAdministrationTool, SWT.BORDER);
+		textNbOfHashes = new Text(adminTool, SWT.BORDER);
 		textNbOfHashes.setBounds((10 + ((((windowWidth - 16) - 20)/8)*7)), (((windowHeight - topBarSize) - 100) + 29) + 20, ((windowWidth - 16) - 20)/8, 22);
 		textNbOfHashes.setEditable(false);
 
 		//Menu Creator==================================
 		
-		Menu menu = new Menu(shlIpfspicsAdministrationTool, SWT.BAR);
-		shlIpfspicsAdministrationTool.setMenuBar(menu);
+		Menu menu = new Menu(adminTool, SWT.BAR);
+		adminTool.setMenuBar(menu);
 		
 		MenuItem mntmQuery = new MenuItem(menu, SWT.CASCADE);
 		mntmQuery.setText("Query");
@@ -144,7 +141,7 @@ public class Administration {
 		
 		//Browser Creator==================================
 		
-		Browser browser = new Browser(shlIpfspicsAdministrationTool, SWT.NONE);
+		Browser browser = new Browser(adminTool, SWT.NONE);
 		browser.setUrl(hashURL);
 		browser.setBounds(10, 10, (windowWidth - 16) - 20, (windowHeight - topBarSize) - 100);
 		
