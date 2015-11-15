@@ -31,6 +31,7 @@ import java.awt.datatransfer.*;
 import java.awt.Toolkit;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.net.URI;
 
 import org.eclipse.swt.SWT;
@@ -98,6 +99,8 @@ public class Administration {
 	 */
 	protected void createContents() {
 		
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double width = screenSize.getWidth();
 		double height = screenSize.getHeight();
@@ -105,13 +108,14 @@ public class Administration {
 		int windowWidth;
 		int windowHeight;
 		int topBarSize;
+		int nbOfScreens = ge.getScreenDevices().length;
 		
 		if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 ) {
-			windowWidth = (int) (width - ((width/2) + (width/15)));
+			windowWidth = (int) (width - ( (width/nbOfScreens) + ( (width - (width/nbOfScreens) ) / 10) ) );
 			windowHeight = (int)(height - (height/10));
 			topBarSize = 30;
 		} else {
-			windowWidth = (int) (width - (width/30));
+			windowWidth = (int) (width - (width/10));
 			windowHeight = (int)(height - (height/10));
 			topBarSize = 59;
 		}
