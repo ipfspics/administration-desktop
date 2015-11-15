@@ -43,7 +43,6 @@ import org.eclipse.swt.widgets.*;
 public class Administration {
 
 	protected Shell adminTool = new Shell();
-	Display display = Display.getDefault();
 
 
 	/**
@@ -51,7 +50,7 @@ public class Administration {
 	 */
 	public void open() {
 		createContents();
-		adminTool.setImage(new Image(display, "C:\\Users\\GoldMember\\Documents"));
+		Display display = Display.getDefault();
 		adminTool.open();
 		adminTool.layout();
 		while (!adminTool.isDisposed()) {
@@ -74,7 +73,7 @@ public class Administration {
 	public String hashURL = "http://ipfs.pics";
 	public int arrayIndex = 0;
 	private Text textNbOfHashes;
-	Image appIcon = new Image(display, "");
+	String OS = System.getProperty("os.name").toLowerCase();
 
 	//Button Creator==================================
 	
@@ -103,20 +102,32 @@ public class Administration {
 		double width = screenSize.getWidth();
 		double height = screenSize.getHeight();
 		
-		int windowWidth = (int) (width - (width/10));
-		int windowHeight = (int)(height - (height/10));
-		int topBarSize = 59;
+		int windowWidth;
+		int windowHeight;
+		int topBarSize;
+		
+		if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 ) {
+			windowWidth = (int) (width - ((width/2) + (width/15)));
+			windowHeight = (int)(height - (height/10));
+			topBarSize = 30;
+		} else {
+			windowWidth = (int) (width - (width/30));
+			windowHeight = (int)(height - (height/10));
+			topBarSize = 59;
+		}
+			
+		System.out.println(windowWidth);
 		
 		adminTool.setSize(windowWidth, windowHeight);
 		adminTool.setText("ipfs.pics Administration Tool");
+		
+		dbConnection.connect();
 		
 		adminTool.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
 				dbConnection.close();
 			}
 		});
-
-		dbConnection.connect();
 
 		textNbOfHashes = new Text(adminTool, SWT.BORDER);
 		textNbOfHashes.setBounds((10 + ((((windowWidth - 16) - 20)/8)*7)), (((windowHeight - topBarSize) - 100) + 29) + 20, ((windowWidth - 16) - 20)/8, 22);
@@ -281,7 +292,6 @@ public class Administration {
 		btnGoogleImage.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				String OS = System.getProperty("os.name").toLowerCase();
 				
 				if (OS.indexOf("win") >= 0) {
 					if (!java.awt.Desktop.isDesktopSupported()) {
