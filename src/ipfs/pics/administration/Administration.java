@@ -111,7 +111,7 @@ public class Administration {
 		int nbOfScreens = ge.getScreenDevices().length;
 		
 		if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 ) {
-			windowWidth = (int) (width - ( (width/nbOfScreens) + ( (width - (width/nbOfScreens) ) / 10) ) );
+			windowWidth = (int) (width - ( ( (nbOfScreens - 1) * (width/nbOfScreens) ) + ( (width - (width/nbOfScreens) ) / 10) ) );
 			windowHeight = (int)(height - (height/10));
 			topBarSize = 30;
 		} else {
@@ -119,8 +119,6 @@ public class Administration {
 			windowHeight = (int)(height - (height/10));
 			topBarSize = 59;
 		}
-			
-		System.out.println(windowWidth);
 		
 		adminTool.setSize(windowWidth, windowHeight);
 		adminTool.setText("ipfs.pics Administration Tool");
