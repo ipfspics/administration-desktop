@@ -75,17 +75,36 @@ public class Administration {
 	public int arrayIndex = 0;
 	private Text textNbOfHashes;
 	String OS = System.getProperty("os.name").toLowerCase();
+	
+	//Dimensions=================================
+	
+	//Get the number of screens
+	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	int nbOfScreens = ge.getScreenDevices().length;
+	
+	//Get the screen dimensions
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	double width = screenSize.getWidth();
+	double height = screenSize.getHeight();
+	
+	int windowWidth;
+	int windowHeight;
+	int topBarSize;
 
 	//Button Creator==================================
 	
 	Button btnNewButtonPrevious = new Button(adminTool, SWT.NONE);
-	Button btnNewButtonNext = new Button(adminTool, SWT.NONE);
-	Button btnNewButtonSFW = new Button(adminTool, SWT.NONE);
-	Button btnNewButtonNSFW = new Button(adminTool, SWT.NONE);
-	Button btnNewButtonBan = new Button(adminTool, SWT.NONE);
-	Button btnNewButtonCTC = new Button(adminTool, SWT.NONE);
 	Button btnNewButtonForget = new Button(adminTool, SWT.NONE);
 	Button btnGoogleImage = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonNSFW = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonSFW = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonBan = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonCTC = new Button(adminTool, SWT.NONE);
+	Button btnNewButtonNext = new Button(adminTool, SWT.NONE);
+	
+	
+	//TODO: Add this to the dimensions equation for flexibility==
+	int nbOfButtons = 8;
 	
 	//CheckButton Creator==================================
 
@@ -99,19 +118,14 @@ public class Administration {
 	 */
 	protected void createContents() {
 		
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		double width = screenSize.getWidth();
-		double height = screenSize.getHeight();
-		
-		int windowWidth;
-		int windowHeight;
-		int topBarSize;
-		int nbOfScreens = ge.getScreenDevices().length;
-		
+		//Setting the basic dimensions
 		if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 ) {
-			windowWidth = (int) (width - ( ( (nbOfScreens - 1) * (width/nbOfScreens) ) + ( (width - (width/nbOfScreens) ) / 10) ) );
+			//Settings have to vary for multiscreen on Linux
+			if (nbOfScreens > 1) {
+				windowWidth = (int) (width - ( ( nbOfScreens - 1 ) * (width/nbOfScreens) ) + ( (width - (width/nbOfScreens) ) / 10) );
+			} else {
+				windowWidth = (int) (width - (width/10));
+			}
 			windowHeight = (int)(height - (height/10));
 			topBarSize = 30;
 		} else {
