@@ -84,7 +84,7 @@ public class Administration {
 	
 	//Get the screen dimensions
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	double width = screenSize.getWidth();
+	double width = (screenSize.getWidth() / nbOfScreens);
 	double height = screenSize.getHeight();
 	
 	int windowWidth;
@@ -119,20 +119,10 @@ public class Administration {
 	protected void createContents() {
 		
 		//Setting the basic dimensions
-		if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 ) {
-			//Settings have to vary for multiscreen on Linux
-			if (nbOfScreens > 1) {
-				windowWidth = (int) (width - ( ( nbOfScreens - 1 ) * (width/nbOfScreens) ) + ( (width - (width/nbOfScreens) ) / 10) );
-			} else {
-				windowWidth = (int) (width - (width/10));
-			}
-			windowHeight = (int)(height - (height/10));
-			topBarSize = 30;
-		} else {
-			windowWidth = (int) (width - (width/10));
-			windowHeight = (int)(height - (height/10));
-			topBarSize = 59;
-		}
+		
+		windowWidth = (int) (width - (width/10));
+		windowHeight = (int)(height - (height/10));
+		topBarSize = 59;
 		
 		adminTool.setSize(windowWidth, windowHeight);
 		adminTool.setText("ipfs.pics Administration Tool");
