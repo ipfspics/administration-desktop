@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ipfs.pics.administration;
+package pics.ipcs.administration;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,14 +26,17 @@ import java.util.ArrayList;
 
 
 public class SQLConnection {
-	//TODO : Move SQL connection related code to this class
 	private boolean updated = false;
+	private boolean selected = false;
 	
 	private Connection conn;
 	
 	private String URL = "jdbc:mysql://ipfs.pics:3306/";
 	private String driver = "com.mysql.jdbc.Driver";
 	
+	/**
+	 * Instanciates the connection to the database
+	 */
 	public void connect() {
 		try {
 			Class.forName(this.driver).newInstance();
@@ -45,6 +48,9 @@ public class SQLConnection {
 		}
 	}
 	
+	/**
+	 * Closes the connection to the database
+	 */
 	public void close() {
 		try {
 			
@@ -57,7 +63,14 @@ public class SQLConnection {
 		}
 	}
 	
+	/**
+	 * Executes an UPDATE query
+	 * 
+	 * @param query The query to be sent
+	 */
 	public void queryUpdate(String query) {
+		updated = false;
+		
 		try {
 			Statement st = conn.createStatement();
 			
@@ -74,7 +87,15 @@ public class SQLConnection {
 		}
 	}
 	
-	public void querySelect(String query, ArrayList<String> pHashArray) {
+	/**
+	 * Executes a SELECT query
+	 * 
+	 * @param query Query to be sent
+	 * @param pHashArray Array that will contain the selection
+	 */
+	public void querySelect(String query, ArrayList<Hash> pHashArray) {
+		selected = false;
+		
 		try {
 			Statement st = conn.createStatement();
 			
@@ -82,7 +103,12 @@ public class SQLConnection {
 			
 			while (res.next()) {
 				String hash = res.getString("hash");
-				pHashArray.add(hash);
+				String nbViews = res.getString("nb_views");
+				pHashArray.add(new Hash(hash, nbViews));
+			}
+			
+			if (pHashArray.size() > 0) {
+				selected = true;
 			}
 		}
 		catch (Exception e) {
@@ -90,8 +116,21 @@ public class SQLConnection {
 		}
 	}
 	
+	/**
+	 * Gets the UPDATE query state
+	 * 
+	 * @return Whether the query was successful or not
+	 */
 	public boolean getUpdated() {
 		return updated;
 	}
 	
+	/**
+	 * Gets the SELECT query state
+	 * 
+	 * @return Whether the query was successful or not
+	 */
+	public boolean isSelected() {
+		return selected;
+	}
 }

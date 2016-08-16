@@ -3,7 +3,7 @@
  * Also insert the database name, sql username and sql password
  */
 
-package ipfs.pics.administration;
+package pics.ipcs.administration;
 
 public class _PrivateVariables {
 	private static String CON_DB_USER_SELECT = ""; //MODIFY THIS
